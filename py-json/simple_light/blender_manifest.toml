@@ -1,0 +1,9 @@
+schema_version = "1.0.0"
+id = "simple_light"
+version = "1.0.0"
+name = "Simple Light"
+tagline = "Create lighting presets around Suzanne"
+maintainer = "Jinho Jung"
+type = "add-on"
+blender_version_min = "5.3.0"
+license = ["SPDX:GPL-3.0-or-later"]
