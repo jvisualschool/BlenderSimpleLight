@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Light 1.0.0 - 조명 프리셋 갤러리 (Jinho Jung)</title>
+  <style>
+    :root {
+      --bg-base: #0b0f17;
+      --bg-panel: #131b2b;
+      --bg-card: #182236;
+      --bg-hover: #1f2d47;
+      --accent: #3b82f6;
+      --accent-strong: #2563eb;
+      --accent-soft: rgba(59, 130, 246, 0.16);
+      --border: #263552;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding-bottom: 64px;
+    }
+
+    header {
+      background: linear-gradient(180deg, #111a2e 0%, var(--bg-base) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px 22px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .brand-title h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .badge {
+      background: var(--accent-soft);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .meta-info {
+      color: var(--text-sub);
+      font-size: 0.88rem;
+    }
+
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-box {
+      flex: 1 1 280px;
+      max-width: 420px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      background: var(--bg-panel);
+      color: var(--text-sub);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-main);
+    }
+
+    .btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    /* Workspace Split: Detail + Compare */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 28px auto;
+      padding: 0 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .panel-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .viewer-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #05070b;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .viewer-frame.layout-mode {
+      aspect-ratio: 4 / 3;
+    }
+
+    .viewer-frame img,
+    .viewer-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .missing-fallback {
+      padding: 24px;
+      text-align: center;
+      color: #f87171;
+      font-size: 0.9rem;
+      background: rgba(127, 29, 29, 0.25);
+      border: 1px dashed #ef4444;
+      border-radius: 8px;
+    }
+
+    .observation-box {
+      background: var(--bg-card);
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 0.92rem;
+    }
+
+    .observation-box strong {
+      color: #60a5fa;
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    .recipe-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .recipe-tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Comparison Slider */
+    .compare-selects {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .compare-selects select {
+      flex: 1 1 180px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+
+    .compare-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #05070b;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      touch-action: pan-y;
+      cursor: ew-resize;
+      outline: none;
+    }
+
+    .compare-container:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+    }
+
+    .compare-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .compare-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .compare-left {
+      clip-path: inset(0 50% 0 0);
+    }
+
+    .compare-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: var(--accent);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .compare-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .compare-badge {
+      position: absolute;
+      top: 12px;
+      padding: 4px 10px;
+      background: rgba(11, 15, 23, 0.82);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    .compare-badge.left { left: 12px; color: #93c5fd; }
+    .compare-badge.right { right: 12px; color: #cbd5e1; }
+
+    /* Grid */
+    .grid-section {
+      padding: 0 24px;
+    }
+
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .preset-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preset-card:hover {
+      transform: translateY(-2px);
+      border-color: #476291;
+    }
+
+    .preset-card.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
+    }
+
+    .card-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #05070b;
+      overflow: hidden;
+    }
+
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-num {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(11, 15, 23, 0.85);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .card-cat {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(11, 15, 23, 0.78);
+      color: var(--text-sub);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+    }
+
+    .card-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-en {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+    }
+
+    .card-obs {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .mini-btn {
+      flex: 1;
+      background: var(--bg-panel);
+      color: var(--text-sub);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 6px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mini-btn:hover {
+      border-color: var(--accent);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <div class="brand-title">
+          <h1>Simple Light</h1>
+          <span class="badge">v1.0.0</span>
+          <span class="badge">Blender 5.3+</span>
+        </div>
+        <div class="meta-info">
+          개발자: <strong>Jinho Jung</strong> | 수잔(Suzanne) 비교 조명 프리셋 22종 오프라인 미리보기
+        </div>
+      </div>
+      <div class="controls-bar">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="번호, 한글 이름, 영문 이름, 관찰 포인트 검색 (예: 08, 렘브란트, Rembrandt)..." />
+        </div>
+        <div class="filter-group" id="categoryFilters">
+          <button class="btn active" data-cat="ALL">전체 (22)</button>
+          <button class="btn" data-cat="톤과 대비">톤과 대비</button>
+          <button class="btn" data-cat="광질">광질</button>
+          <button class="btn" data-cat="방향과 인물">방향과 인물</button>
+          <button class="btn" data-cat="소품과 공간">소품과 공간</button>
+          <button class="btn" data-cat="색과 시간대">색과 시간대</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="workspace">
+      <!-- Left: Selected Preset Detail Viewer -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title" id="detailTitle">05 하드 라이트 (Hard Light)</div>
+          <div class="filter-group">
+            <button class="btn active" id="btnViewRender">렌더 결과 보기</button>
+            <button class="btn" id="btnViewLayout">조명 배치 보기</button>
+            <button class="btn" id="btnViewVideo" style="display:none;">반복 영상 보기 (1~48f)</button>
+          </div>
+        </div>
+        <div class="viewer-frame" id="detailViewer"></div>
+        <div class="observation-box">
+          <strong>수잔에서 확인할 특징 (관찰 포인트)</strong>
+          <span id="detailObservation"></span>
+        </div>
+        <div class="recipe-tags" id="detailRecipe"></div>
+      </div>
+
+      <!-- Right: Two-Preset Comparison Slider -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title">두 조명 비교 슬라이더 (드래그 또는 좌우 화살표 키)</div>
+          <div class="filter-group">
+            <button class="btn" id="btnPair0506">05 하드 vs 06 소프트</button>
+            <button class="btn" id="btnPair0312">03 실루엣 vs 12 림</button>
+            <button class="btn" id="btnPair0911">09 버터플라이 vs 11 탑</button>
+            <button class="btn" id="btnPair0422">04 보색 vs 22 틸앤오렌지</button>
+          </div>
+        </div>
+        <div class="compare-selects">
+          <select id="selectLeft" aria-label="왼쪽 비교 프리셋"></select>
+          <select id="selectRight" aria-label="오른쪽 비교 프리셋"></select>
+        </div>
+        <div class="compare-container" id="compareBox" tabindex="0" role="slider" aria-label="두 조명 비교 경계선" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+          <div class="compare-layer compare-right" id="compareRightLayer"></div>
+          <div class="compare-layer compare-left" id="compareLeftLayer"></div>
+          <div class="compare-handle" id="compareHandle">
+            <div class="compare-knob">&#8596;</div>
+          </div>
+          <div class="compare-badge left" id="badgeLeft">05 하드 라이트</div>
+          <div class="compare-badge right" id="badgeRight">06 소프트 라이트</div>
+        </div>
+        <div class="observation-box">
+          <strong>비교 안내</strong>
+          <span>동일한 카메라(70mm)와 수잔 구도에서 촬영된 두 프리셋의 그림자 경계, 밝기 대비, 색상 분리를 좌우로 움직여 대조할 수 있습니다.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-section">
+      <div class="grid-header">
+        <h2>전체 조명 프리셋 목록 (<span id="countLabel">22</span> / 22)</h2>
+      </div>
+      <div class="preset-grid" id="presetGrid"></div>
+    </section>
+  </main>
+
+  <script>
+    const PRESETS = [
+  {
+    "schema_version": 1,
+    "id": "01_high_key",
+    "number": "01",
+    "name_ko": "하이키",
+    "name_en": "High-Key",
+    "category": "톤과 대비",
+    "observation": "눈 안쪽과 턱 밑까지 밝고, 연한 그림자 속에서도 코와 입체감이 남는다.",
+    "subtitle_ko": "그림자 없이 밝고 화사하게",
+    "subtitle_en": "Bright and even, almost no shadows",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.8,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -2.0,
+          -3.0,
+          3.5
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 500.0,
+        "color_srgb": "#FFFFFF",
+        "size": 3.0
+      },
+      {
+        "role": "Fill",
+        "type": "AREA",
+        "position": [
+          2.0,
+          -3.0,
+          2.5
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 400.0,
+        "color_srgb": "#FFFFFF",
+        "size": 3.0
+      },
+      {
+        "role": "Background",
+        "type": "AREA",
+        "position": [
+          0.0,
+          0.8,
+          2.5
+        ],
+        "target": [
+          0.0,
+          1.5,
+          2.0
+        ],
+        "energy": 400.0,
+        "color_srgb": "#FFFFFF",
+        "size": 2.0
+      }
+    ],
+    "props": [],
+    "render": "images/01_high_key.webp",
+    "layout": "layouts/01_high_key.webp",
+    "thumbnail": "icons/01_high_key.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "02_low_key",
+    "number": "02",
+    "name_ko": "로우키",
+    "name_en": "Low-Key",
+    "category": "톤과 대비",
+    "observation": "한쪽 눈두덩과 콧등만 떠오르고 얼굴 대부분은 어둡다.",
+    "subtitle_ko": "어둠 속 일부만 빛나게",
+    "subtitle_en": "Mostly dark, only part is lit",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.02,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -2.0,
+          -1.0,
+          3.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 250.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.5
+      }
+    ],
+    "props": [],
+    "render": "images/02_low_key.webp",
+    "layout": "layouts/02_low_key.webp",
+    "thumbnail": "icons/02_low_key.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "03_silhouette",
+    "number": "03",
+    "name_ko": "실루엣",
+    "name_en": "Silhouette",
+    "category": "톤과 대비",
+    "observation": "눈코의 묘사가 사라져도 양쪽 귀와 머리의 외곽이 배경에서 읽힌다.",
+    "subtitle_ko": "역광만 남겨 형태로 보여주기",
+    "subtitle_en": "Backlight only, the subject becomes a shape",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.8,
+    "backdrop_offset_y": 2.4,
+    "lights": [
+      {
+        "role": "Background",
+        "type": "AREA",
+        "position": [
+          0.0,
+          0.8,
+          2.0
+        ],
+        "target": [
+          0.0,
+          2.4,
+          2.0
+        ],
+        "energy": 800.0,
+        "color_srgb": "#FFFFFF",
+        "size": 2.0
+      }
+    ],
+    "props": [],
+    "render": "images/03_silhouette.webp",
+    "layout": "layouts/03_silhouette.webp",
+    "thumbnail": "icons/03_silhouette.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "04_complementary",
+    "number": "04",
+    "name_ko": "보색 대비",
+    "name_en": "Complementary",
+    "category": "색과 시간대",
+    "observation": "두 볼에 서로 다른 색이 맺히고 코 주변에 두 색의 경계가 생긴다.",
+    "subtitle_ko": "보색 두 색을 양쪽에서 쏘아 강렬하게",
+    "subtitle_en": "Two opposite colors from both sides",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.04,
+    "lights": [
+      {
+        "role": "Left",
+        "type": "AREA",
+        "position": [
+          -2.0,
+          -2.0,
+          2.0
+        ],
+        "target": [
+          -0.35,
+          -0.1,
+          1.15
+        ],
+        "energy": 350.0,
+        "color_srgb": "#FF2040",
+        "size": 1.0
+      },
+      {
+        "role": "Right",
+        "type": "AREA",
+        "position": [
+          2.0,
+          -2.0,
+          2.0
+        ],
+        "target": [
+          0.35,
+          -0.1,
+          1.15
+        ],
+        "energy": 350.0,
+        "color_srgb": "#00D9FF",
+        "size": 1.0
+      }
+    ],
+    "props": [],
+    "render": "images/04_complementary.webp",
+    "layout": "layouts/04_complementary.webp",
+    "thumbnail": "icons/04_complementary.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "05_hard",
+    "number": "05",
+    "name_ko": "하드 라이트",
+    "name_en": "Hard Light",
+    "category": "광질",
+    "observation": "코가 볼에 드리운 그림자의 경계가 날카롭다.",
+    "subtitle_ko": "선명하고 날카로운 그림자",
+    "subtitle_en": "Sharp-edged, crisp shadows",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.08,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -2.0,
+          -3.0,
+          3.5
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 500.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.08
+      }
+    ],
+    "props": [],
+    "render": "images/05_hard.webp",
+    "layout": "layouts/05_hard.webp",
+    "thumbnail": "icons/05_hard.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "06_soft",
+    "number": "06",
+    "name_ko": "소프트 라이트",
+    "name_en": "Soft Light",
+    "category": "광질",
+    "observation": "같은 방향의 코 그림자가 넓고 부드럽게 퍼진다.",
+    "subtitle_ko": "경계가 부드럽게 번지는 그림자",
+    "subtitle_en": "Gentle, gradual shadows",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.08,
+    "energy_compensation": 1.08,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -2.0,
+          -3.0,
+          3.5
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 540.0,
+        "color_srgb": "#FFFFFF",
+        "size": 2.0
+      }
+    ],
+    "props": [],
+    "render": "images/06_soft.webp",
+    "layout": "layouts/06_soft.webp",
+    "thumbnail": "icons/06_soft.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "07_three_point",
+    "number": "07",
+    "name_ko": "3점 조명",
+    "name_en": "Three-Point Lighting",
+    "category": "방향과 인물",
+    "observation": "키는 콧등의 방향을 만들고, 필은 반대 눈을 드러내고, 백은 귀 끝을 배경에서 분리한다.",
+    "subtitle_ko": "키, 필, 백 세 개로 만드는 조명의 기본",
+    "subtitle_en": "Key, Fill, and Back light fundamentals",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.04,
+    "backdrop_offset_y": 2.6,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -2.0,
+          -3.0,
+          3.5
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 500.0,
+        "color_srgb": "#FFFFFF",
+        "size": 1.0
+      },
+      {
+        "role": "Fill",
+        "type": "AREA",
+        "position": [
+          2.0,
+          -3.0,
+          2.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 150.0,
+        "color_srgb": "#FFFFFF",
+        "size": 2.0
+      },
+      {
+        "role": "Back",
+        "type": "AREA",
+        "position": [
+          1.0,
+          2.0,
+          3.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 500.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.6
+      }
+    ],
+    "props": [],
+    "render": "images/07_three_point.webp",
+    "layout": "layouts/07_three_point.webp",
+    "thumbnail": "icons/07_three_point.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "08_rembrandt",
+    "number": "08",
+    "name_ko": "렘브란트",
+    "name_en": "Rembrandt",
+    "category": "방향과 인물",
+    "observation": "그늘진 쪽 눈 아래에 작은 삼각형 밝은 면이 남는다.",
+    "subtitle_ko": "어두운 뺨에 빛의 삼각형",
+    "subtitle_en": "A triangle of light on the shadow side",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.02,
+    "calibrated_note": "수평각 58도, 높이 3.6m (위치 [-1.357, -0.848, 3.6], 크기 0.12m)로 수잔 돌출 주둥이 너머 오른쪽 뺨 눈 밑에 삼각형 하이라이트 형성 검증",
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -1.357,
+          -0.848,
+          3.6
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 260.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.12
+      },
+      {
+        "role": "Fill",
+        "type": "AREA",
+        "position": [
+          2.0,
+          -3.0,
+          2.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 15.0,
+        "color_srgb": "#FFFFFF",
+        "size": 2.0
+      }
+    ],
+    "props": [],
+    "render": "images/08_rembrandt.webp",
+    "layout": "layouts/08_rembrandt.webp",
+    "thumbnail": "icons/08_rembrandt.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "09_butterfly",
+    "number": "09",
+    "name_ko": "버터플라이",
+    "name_en": "Butterfly",
+    "category": "방향과 인물",
+    "observation": "코 바로 아래에 좌우 대칭에 가까운 짧은 그림자가 생긴다.",
+    "subtitle_ko": "위에서 비춰 코 밑 나비 그림자",
+    "subtitle_en": "Light from above, shadow under the nose",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.05,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          0.0,
+          -3.0,
+          3.5
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 500.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.7
+      }
+    ],
+    "props": [],
+    "render": "images/09_butterfly.webp",
+    "layout": "layouts/09_butterfly.webp",
+    "thumbnail": "icons/09_butterfly.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "10_split",
+    "number": "10",
+    "name_ko": "스플릿",
+    "name_en": "Split",
+    "category": "방향과 인물",
+    "observation": "이마와 코 중심을 따라 얼굴의 밝은 절반과 어두운 절반이 나뉜다.",
+    "subtitle_ko": "얼굴 반쪽만 빛, 반쪽은 어둠",
+    "subtitle_en": "Light splits the face in half",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.02,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -3.0,
+          0.0,
+          1.2
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 350.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.4
+      }
+    ],
+    "props": [],
+    "render": "images/10_split.webp",
+    "layout": "layouts/10_split.webp",
+    "thumbnail": "icons/10_split.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "11_top_light",
+    "number": "11",
+    "name_ko": "탑 라이트",
+    "name_en": "Top Light",
+    "category": "방향과 인물",
+    "observation": "정수리와 눈썹 능선이 밝고 두 눈은 깊은 그늘에 들어간다.",
+    "subtitle_ko": "머리 위 조명, 눈을 그림자로",
+    "subtitle_en": "Overhead light hides the eyes",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.02,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          0.0,
+          -0.15,
+          4.0
+        ],
+        "target": [
+          0.0,
+          -0.15,
+          1.2
+        ],
+        "energy": 500.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.6
+      }
+    ],
+    "props": [],
+    "render": "images/11_top_light.webp",
+    "layout": "layouts/11_top_light.webp",
+    "thumbnail": "icons/11_top_light.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "12_rim_light",
+    "number": "12",
+    "name_ko": "림 라이트",
+    "name_en": "Rim Light",
+    "category": "방향과 인물",
+    "observation": "어두운 얼굴 둘레에 귀와 머리를 따라 가는 밝은 선이 생긴다.",
+    "subtitle_ko": "뒤에서 비춰 윤곽선만 빛나게",
+    "subtitle_en": "Backlight that outlines the edges",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_remove": true,
+    "lights": [
+      {
+        "role": "Rim",
+        "type": "AREA",
+        "shape": "RECTANGLE",
+        "position": [
+          1.5,
+          2.0,
+          2.6
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 900.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.25,
+        "size_y": 2.0
+      },
+      {
+        "role": "RimLeft",
+        "type": "AREA",
+        "shape": "RECTANGLE",
+        "position": [
+          -1.5,
+          2.0,
+          2.4
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 550.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.25,
+        "size_y": 2.0
+      }
+    ],
+    "props": [
+      {
+        "type": "RIM_FLOOR_BLOCKER"
+      }
+    ],
+    "render": "images/12_rim_light.webp",
+    "layout": "layouts/12_rim_light.webp",
+    "thumbnail": "icons/12_rim_light.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "13_under_lighting",
+    "number": "13",
+    "name_ko": "언더 라이팅",
+    "name_en": "Under Lighting",
+    "category": "방향과 인물",
+    "observation": "주둥이 아랫면이 밝아지고 코 그림자가 이마 쪽으로 올라간다.",
+    "subtitle_ko": "아래에서 위로, 섬뜩하게",
+    "subtitle_en": "Light from below for an eerie mood",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.02,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          0.0,
+          -1.5,
+          0.3
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.35
+        ],
+        "energy": 200.0,
+        "color_srgb": "#FFFFFF",
+        "size": 0.4
+      }
+    ],
+    "props": [],
+    "render": "images/13_under_lighting.webp",
+    "layout": "layouts/13_under_lighting.webp",
+    "thumbnail": "icons/13_under_lighting.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "14_venetian_blinds",
+    "number": "14",
+    "name_ko": "블라인드",
+    "name_en": "Venetian Blinds",
+    "category": "소품과 공간",
+    "observation": "밝고 어두운 평행 띠가 얼굴 굴곡을 지나 배경까지 이어진다.",
+    "subtitle_ko": "줄무늬 그림자로 누아르 감성",
+    "subtitle_en": "Striped shadows for a noir look",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.25,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "SPOT",
+        "position": [
+          -3.0,
+          -2.0,
+          3.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 900.0,
+        "color_srgb": "#FFFFFF",
+        "radius": 0.02,
+        "spot_size_deg": 50.0,
+        "spot_blend": 0.05
+      }
+    ],
+    "props": [
+      {
+        "type": "BLINDS",
+        "slat_count": 14,
+        "slat_length": 4.0,
+        "slat_height": 0.1,
+        "slat_gap": 0.16,
+        "slat_thickness": 0.02,
+        "roll_deg": 20.0
+      }
+    ],
+    "render": "images/14_venetian_blinds.webp",
+    "layout": "layouts/14_venetian_blinds.webp",
+    "thumbnail": "icons/14_venetian_blinds.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "15_volumetric",
+    "number": "15",
+    "name_ko": "볼류메트릭",
+    "name_en": "Volumetric",
+    "category": "소품과 공간",
+    "observation": "수잔 옆 빈 공간에도 빛줄기가 보이고 얼굴 윤곽이 안개에 묻히지 않는다.",
+    "subtitle_ko": "안개 속에 보이는 빛줄기",
+    "subtitle_en": "Visible beams of light through haze",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_remove": true,
+    "lights": [
+      {
+        "role": "BackSpot",
+        "type": "SPOT",
+        "position": [
+          2.0,
+          2.0,
+          4.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 4500.0,
+        "color_srgb": "#D5E8FF",
+        "radius": 0.02,
+        "spot_size_deg": 38.0,
+        "spot_blend": 0.08
+      },
+      {
+        "role": "Fill",
+        "type": "AREA",
+        "position": [
+          -2.0,
+          -3.0,
+          2.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 35.0,
+        "color_srgb": "#D5E8FF",
+        "size": 2.0
+      }
+    ],
+    "props": [
+      {
+        "type": "VOLUME_GOBO",
+        "box_center": [
+          0.0,
+          0.0,
+          2.0
+        ],
+        "box_size": [
+          6.0,
+          6.0,
+          4.0
+        ],
+        "density": 0.035,
+        "anisotropy": 0.45,
+        "bar_width": 0.14,
+        "bar_gap": 0.3,
+        "bar_count": 5
+      }
+    ],
+    "render": "images/15_volumetric.webp",
+    "layout": "layouts/15_volumetric.webp",
+    "thumbnail": "icons/15_volumetric.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "16_motivated",
+    "number": "16",
+    "name_ko": "모티베이티드 라이트",
+    "name_en": "Motivated Light",
+    "category": "소품과 공간",
+    "observation": "창의 위치와 밝은 볼의 방향이 일치해 빛이 어디서 들어왔는지 짐작할 수 있다.",
+    "subtitle_ko": "창문처럼 화면 속에 이유가 있는 빛",
+    "subtitle_en": "Light with a believable source in the scene",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.18,
+    "lights": [
+      {
+        "role": "Window",
+        "type": "AREA",
+        "position": [
+          -3.0,
+          -0.4,
+          2.3
+        ],
+        "target": [
+          0.3,
+          0.6,
+          1.3
+        ],
+        "energy": 950.0,
+        "color_srgb": "#FFF0D8",
+        "size": 0.25
+      },
+      {
+        "role": "RoomFill",
+        "type": "AREA",
+        "position": [
+          2.0,
+          -2.5,
+          2.2
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 20.0,
+        "color_srgb": "#DCE8FF",
+        "size": 2.5
+      }
+    ],
+    "props": [
+      {
+        "type": "WINDOW_WALL",
+        "wall_x": -1.8,
+        "open_width": 1.5,
+        "open_height": 2.0,
+        "center_z": 1.5,
+        "frame_thickness": 0.08
+      }
+    ],
+    "render": "images/16_motivated.webp",
+    "layout": "layouts/16_motivated.webp",
+    "thumbnail": "icons/16_motivated.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "17_practical",
+    "number": "17",
+    "name_ko": "프랙티컬",
+    "name_en": "Practical",
+    "category": "소품과 공간",
+    "observation": "화면에 보이는 램프, 램프에 가까운 볼의 밝기, 바닥의 빛 자국이 연결된다.",
+    "subtitle_ko": "화면 속 램프가 실제 광원",
+    "subtitle_en": "A lamp in the frame is the light source",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.06,
+    "lights": [
+      {
+        "role": "Bulb",
+        "type": "POINT",
+        "position": [
+          -0.82,
+          -0.7,
+          1.45
+        ],
+        "energy": 110.0,
+        "color_srgb": "#FFD0A0",
+        "radius": 0.06
+      }
+    ],
+    "props": [
+      {
+        "type": "PRACTICAL_LAMP",
+        "position": [
+          -0.82,
+          -0.7,
+          1.45
+        ],
+        "bulb_radius": 0.045,
+        "emission_strength": 10.0,
+        "shade_radius": 0.16,
+        "shade_height": 0.18,
+        "color_srgb": "#FFD0A0"
+      }
+    ],
+    "render": "images/17_practical.webp",
+    "layout": "layouts/17_practical.webp",
+    "thumbnail": "icons/17_practical.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "18_candlelight",
+    "number": "18",
+    "name_ko": "촛불",
+    "name_en": "Candlelight",
+    "category": "소품과 공간",
+    "observation": "턱과 볼 아래가 따뜻하게 물든다. 같은 시드로 재생할 때 불꽃과 얼굴 밝기가 함께 흔들린다.",
+    "subtitle_ko": "흔들리는 따뜻한 사극 조명",
+    "subtitle_en": "Warm flickering light for period drama",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.03,
+    "lights": [
+      {
+        "role": "Candle",
+        "type": "POINT",
+        "position": [
+          -0.65,
+          -0.8,
+          0.7
+        ],
+        "energy": 45.0,
+        "color_srgb": "#FFAA55",
+        "radius": 0.025,
+        "flicker": true,
+        "flicker_amp": 0.08,
+        "flicker_seed": 18
+      }
+    ],
+    "props": [
+      {
+        "type": "CANDLE",
+        "position": [
+          -0.65,
+          -0.8,
+          0.7
+        ],
+        "candle_radius": 0.035,
+        "candle_height": 0.3,
+        "flame_height": 0.06,
+        "emission_strength": 8.0,
+        "color_srgb": "#FFAA55",
+        "seed": 18
+      }
+    ],
+    "render": "images/18_candlelight.webp",
+    "layout": "layouts/18_candlelight.webp",
+    "thumbnail": "icons/18_candlelight.png",
+    "video": "images/18_candlelight.mp4"
+  },
+  {
+    "schema_version": 1,
+    "id": "19_spotlight",
+    "number": "19",
+    "name_ko": "스포트라이트",
+    "name_en": "Spotlight",
+    "category": "소품과 공간",
+    "observation": "어두운 바닥에 빛의 웅덩이가 생기고 수잔이 그 안에 들어간다.",
+    "subtitle_ko": "어둠 속 한 사람만 집중",
+    "subtitle_en": "One pool of light in the dark",
+    "target": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "backdrop_color_linear": 0.01,
+    "lights": [
+      {
+        "role": "Spot",
+        "type": "SPOT",
+        "position": [
+          0.0,
+          -2.0,
+          4.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "energy": 1000.0,
+        "color_srgb": "#FFFFFF",
+        "radius": 0.05,
+        "spot_size_deg": 35.0,
+        "spot_blend": 0.15
+      }
+    ],
+    "props": [],
+    "render": "images/19_spotlight.webp",
+    "layout": "layouts/19_spotlight.webp",
+    "thumbnail": "icons/19_spotlight.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "20_golden_hour",
+    "number": "20",
+    "name_ko": "골든아워",
+    "name_en": "Golden Hour",
+    "category": "색과 시간대",
+    "observation": "귀 가장자리는 금빛이고 바닥 그림자는 길게 뻗는다.",
+    "subtitle_ko": "해 질 녘 낮고 따뜻한 햇빛",
+    "subtitle_en": "Low, warm sunlight at sunset",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_remove": true,
+    "lights": [
+      {
+        "role": "Sun",
+        "type": "SUN",
+        "elevation_deg": 8.0,
+        "azimuth_deg": 140.0,
+        "energy": 8.0,
+        "color_srgb": "#FFAC50",
+        "angle_deg": 1.0
+      },
+      {
+        "role": "Fill",
+        "type": "AREA",
+        "position": [
+          0.0,
+          -2.0,
+          4.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 60.0,
+        "color_srgb": "#FFE2B8",
+        "size": 4.0
+      }
+    ],
+    "props": [],
+    "render": "images/20_golden_hour.webp",
+    "layout": "layouts/20_golden_hour.webp",
+    "thumbnail": "icons/20_golden_hour.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "21_blue_hour",
+    "number": "21",
+    "name_ko": "블루아워",
+    "name_en": "Blue Hour",
+    "category": "색과 시간대",
+    "observation": "눈과 주둥이의 굴곡이 낮은 대비의 푸른빛 안에서 읽힌다.",
+    "subtitle_ko": "해 진 뒤 차갑고 푸른 빛",
+    "subtitle_en": "Cool blue light after sunset",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.06,
+    "lights": [
+      {
+        "role": "Sky",
+        "type": "AREA",
+        "position": [
+          0.0,
+          0.0,
+          5.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 250.0,
+        "color_srgb": "#82B7FF",
+        "size": 5.0
+      },
+      {
+        "role": "Fill",
+        "type": "AREA",
+        "position": [
+          0.0,
+          -3.0,
+          2.0
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 50.0,
+        "color_srgb": "#B8D4FF",
+        "size": 3.0
+      }
+    ],
+    "props": [],
+    "render": "images/21_blue_hour.webp",
+    "layout": "layouts/21_blue_hour.webp",
+    "thumbnail": "icons/21_blue_hour.png"
+  },
+  {
+    "schema_version": 1,
+    "id": "22_teal_and_orange",
+    "number": "22",
+    "name_ko": "틸앤오렌지",
+    "name_en": "Teal & Orange",
+    "category": "색과 시간대",
+    "observation": "얼굴이 따뜻한 한 덩어리로 읽히고 청록색 배경에서 분리된다.",
+    "subtitle_ko": "따뜻한 피부, 차가운 배경",
+    "subtitle_en": "Warm skin against cool shadows",
+    "target": [
+      0.0,
+      0.0,
+      1.2
+    ],
+    "backdrop_color_linear": 0.25,
+    "lights": [
+      {
+        "role": "Key",
+        "type": "AREA",
+        "position": [
+          -1.8,
+          -3.0,
+          2.4
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 350.0,
+        "color_srgb": "#FF8C3B",
+        "size": 1.5
+      },
+      {
+        "role": "Background",
+        "type": "AREA",
+        "position": [
+          0.0,
+          0.8,
+          2.2
+        ],
+        "target": [
+          0.0,
+          1.5,
+          2.0
+        ],
+        "energy": 700.0,
+        "color_srgb": "#00A8B8",
+        "size": 3.0
+      },
+      {
+        "role": "RimShadow",
+        "type": "AREA",
+        "position": [
+          2.2,
+          1.0,
+          2.4
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.2
+        ],
+        "energy": 200.0,
+        "color_srgb": "#00B8C8",
+        "size": 1.5
+      }
+    ],
+    "props": [],
+    "render": "images/22_teal_and_orange.webp",
+    "layout": "layouts/22_teal_and_orange.webp",
+    "thumbnail": "icons/22_teal_and_orange.png"
+  }
+];
+
+    let currentPresetId = "05_hard";
+    let currentViewMode = "RENDER"; // RENDER | LAYOUT | VIDEO
+    let compareLeftId = "05_hard";
+    let compareRightId = "06_soft";
+    let sliderPercent = 50;
+    let activeCategory = "ALL";
+    let searchQuery = "";
+
+    const detailTitle = document.getElementById("detailTitle");
+    const detailViewer = document.getElementById("detailViewer");
+    const detailObservation = document.getElementById("detailObservation");
+    const detailRecipe = document.getElementById("detailRecipe");
+    const btnViewRender = document.getElementById("btnViewRender");
+    const btnViewLayout = document.getElementById("btnViewLayout");
+    const btnViewVideo = document.getElementById("btnViewVideo");
+
+    const selectLeft = document.getElementById("selectLeft");
+    const selectRight = document.getElementById("selectRight");
+    const compareBox = document.getElementById("compareBox");
+    const compareLeftLayer = document.getElementById("compareLeftLayer");
+    const compareRightLayer = document.getElementById("compareRightLayer");
+    const compareHandle = document.getElementById("compareHandle");
+    const badgeLeft = document.getElementById("badgeLeft");
+    const badgeRight = document.getElementById("badgeRight");
+
+    const presetGrid = document.getElementById("presetGrid");
+    const countLabel = document.getElementById("countLabel");
+    const searchInput = document.getElementById("searchInput");
+
+    function getPreset(id) {
+      return PRESETS.find(p => p.id === id) || PRESETS[0];
+    }
+
+    function createImageWithFallback(src, fallbackSrc, altText) {
+      const img = document.createElement("img");
+      img.alt = altText;
+      img.src = src;
+      img.onerror = function() {
+        if (fallbackSrc && img.src.indexOf(fallbackSrc) === -1) {
+          img.src = fallbackSrc;
+        } else {
+          const msg = document.createElement("div");
+          msg.className = "missing-fallback";
+          msg.textContent = "이미지를 찾을 수 없습니다: " + src;
+          if (img.parentNode) {
+            img.parentNode.replaceChild(msg, img);
+          }
+        }
+      };
+      return img;
+    }
+
+    function renderDetail() {
+      const p = getPreset(currentPresetId);
+      detailTitle.textContent = `${p.number} ${p.name_ko} (${p.name_en})`;
+      detailObservation.textContent = p.observation;
+
+      btnViewVideo.style.display = p.video ? "inline-block" : "none";
+      if (!p.video && currentViewMode === "VIDEO") {
+        currentViewMode = "RENDER";
+      }
+
+      btnViewRender.classList.toggle("active", currentViewMode === "RENDER");
+      btnViewLayout.classList.toggle("active", currentViewMode === "LAYOUT");
+      btnViewVideo.classList.toggle("active", currentViewMode === "VIDEO");
+      detailViewer.classList.toggle("layout-mode", currentViewMode === "LAYOUT");
+      detailViewer.innerHTML = "";
+
+      if (currentViewMode === "VIDEO" && p.video) {
+        const vid = document.createElement("video");
+        vid.src = p.video;
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.muted = true;
+        vid.playsInline = true;
+        vid.controls = true;
+        detailViewer.appendChild(vid);
+      } else if (currentViewMode === "LAYOUT") {
+        const pngFallback = p.layout.replace(/\.webp$/, ".png");
+        detailViewer.appendChild(createImageWithFallback(p.layout, pngFallback, p.name_ko + " 조명 배치"));
+      } else {
+        const pngFallback = p.render.replace(/\.webp$/, ".png");
+        detailViewer.appendChild(createImageWithFallback(p.render, pngFallback, p.name_ko + " 렌더"));
+      }
+
+      detailRecipe.innerHTML = "";
+      const catTag = document.createElement("span");
+      catTag.className = "recipe-tag";
+      catTag.textContent = `분류: ${p.category}`;
+      detailRecipe.appendChild(catTag);
+
+      (p.lights || []).forEach(l => {
+        const t = document.createElement("span");
+        t.className = "recipe-tag";
+        const unit = l.type === "SUN" ? "W/m²" : "W";
+        t.textContent = `${l.role} (${l.type}): ${l.energy} ${unit} / ${l.color_srgb}`;
+        detailRecipe.appendChild(t);
+      });
+    }
+
+    function updateComparison() {
+      const pL = getPreset(compareLeftId);
+      const pR = getPreset(compareRightId);
+      selectLeft.value = pL.id;
+      selectRight.value = pR.id;
+      badgeLeft.textContent = `${pL.number} ${pL.name_ko}`;
+      badgeRight.textContent = `${pR.number} ${pR.name_ko}`;
+
+      compareLeftLayer.innerHTML = "";
+      compareRightLayer.innerHTML = "";
+      compareLeftLayer.appendChild(
+        createImageWithFallback(pL.render, pL.render.replace(/\.webp$/, ".png"), pL.name_ko)
+      );
+      compareRightLayer.appendChild(
+        createImageWithFallback(pR.render, pR.render.replace(/\.webp$/, ".png"), pR.name_ko)
+      );
+      setSliderPosition(sliderPercent);
+    }
+
+    function setSliderPosition(pct) {
+      sliderPercent = Math.max(0, Math.min(100, pct));
+      compareLeftLayer.style.clipPath = `inset(0 ${100 - sliderPercent}% 0 0)`;
+      compareHandle.style.left = `${sliderPercent}%`;
+      compareBox.setAttribute("aria-valuenow", Math.round(sliderPercent));
+    }
+
+    function populateCompareSelects() {
+      selectLeft.innerHTML = "";
+      selectRight.innerHTML = "";
+      PRESETS.forEach(p => {
+        const o1 = document.createElement("option");
+        o1.value = p.id;
+        o1.textContent = `${p.number} ${p.name_ko} (${p.name_en})`;
+        const o2 = o1.cloneNode(true);
+        selectLeft.appendChild(o1);
+        selectRight.appendChild(o2);
+      });
+    }
+
+    function renderGrid() {
+      presetGrid.innerHTML = "";
+      const q = searchQuery.trim().toLowerCase();
+      const filtered = PRESETS.filter(p => {
+        if (activeCategory !== "ALL" && p.category !== activeCategory) return false;
+        if (!q) return true;
+        const hay = `${p.number} ${p.name_ko} ${p.name_en} ${p.category} ${p.observation} ${p.subtitle_ko || ""}`.toLowerCase();
+        return hay.includes(q);
+      });
+
+      countLabel.textContent = filtered.length;
+
+      filtered.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "preset-card" + (p.id === currentPresetId ? " selected" : "");
+        card.onclick = () => {
+          currentPresetId = p.id;
+          renderDetail();
+          renderGrid();
+        };
+
+        const thumb = document.createElement("div");
+        thumb.className = "card-thumb";
+        thumb.appendChild(
+          createImageWithFallback(p.render, p.render.replace(/\.webp$/, ".png"), p.name_ko)
+        );
+
+        const num = document.createElement("span");
+        num.className = "card-num";
+        num.textContent = p.number;
+        thumb.appendChild(num);
+
+        const cat = document.createElement("span");
+        cat.className = "card-cat";
+        cat.textContent = p.category;
+        thumb.appendChild(cat);
+
+        const body = document.createElement("div");
+        body.className = "card-body";
+
+        const title = document.createElement("div");
+        title.className = "card-title";
+        title.textContent = p.name_ko;
+
+        const en = document.createElement("div");
+        en.className = "card-en";
+        en.textContent = p.name_en;
+
+        const obs = document.createElement("div");
+        obs.className = "card-obs";
+        obs.textContent = p.observation;
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const btnL = document.createElement("button");
+        btnL.className = "mini-btn";
+        btnL.textContent = "비교 왼쪽에 놓기";
+        btnL.onclick = (e) => {
+          e.stopPropagation();
+          compareLeftId = p.id;
+          updateComparison();
+        };
+
+        const btnR = document.createElement("button");
+        btnR.className = "mini-btn";
+        btnR.textContent = "비교 오른쪽에 놓기";
+        btnR.onclick = (e) => {
+          e.stopPropagation();
+          compareRightId = p.id;
+          updateComparison();
+        };
+
+        actions.appendChild(btnL);
+        actions.appendChild(btnR);
+
+        body.appendChild(title);
+        body.appendChild(en);
+        body.appendChild(obs);
+        body.appendChild(actions);
+
+        card.appendChild(thumb);
+        card.appendChild(body);
+        presetGrid.appendChild(card);
+      });
+    }
+
+    // Events
+    btnViewRender.onclick = () => { currentViewMode = "RENDER"; renderDetail(); };
+    btnViewLayout.onclick = () => { currentViewMode = "LAYOUT"; renderDetail(); };
+    btnViewVideo.onclick = () => { currentViewMode = "VIDEO"; renderDetail(); };
+
+    selectLeft.onchange = (e) => { compareLeftId = e.target.value; updateComparison(); };
+    selectRight.onchange = (e) => { compareRightId = e.target.value; updateComparison(); };
+
+    document.getElementById("btnPair0506").onclick = () => { compareLeftId = "05_hard"; compareRightId = "06_soft"; updateComparison(); };
+    document.getElementById("btnPair0312").onclick = () => { compareLeftId = "03_silhouette"; compareRightId = "12_rim_light"; updateComparison(); };
+    document.getElementById("btnPair0911").onclick = () => { compareLeftId = "09_butterfly"; compareRightId = "11_top_light"; updateComparison(); };
+    document.getElementById("btnPair0422").onclick = () => { compareLeftId = "04_complementary"; compareRightId = "22_teal_and_orange"; updateComparison(); };
+
+    let isDragging = false;
+    function updateFromPointer(clientX) {
+      const rect = compareBox.getBoundingClientRect();
+      const pct = ((clientX - rect.left) / rect.width) * 100;
+      setSliderPosition(pct);
+    }
+
+    compareBox.addEventListener("pointerdown", (e) => {
+      isDragging = true;
+      compareBox.setPointerCapture(e.pointerId);
+      updateFromPointer(e.clientX);
+    });
+    compareBox.addEventListener("pointermove", (e) => {
+      if (isDragging) updateFromPointer(e.clientX);
+    });
+    compareBox.addEventListener("pointerup", () => { isDragging = false; });
+    compareBox.addEventListener("pointercancel", () => { isDragging = false; });
+
+    compareBox.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setSliderPosition(sliderPercent - 4);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setSliderPosition(sliderPercent + 4);
+      }
+    });
+
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderGrid();
+    });
+
+    document.querySelectorAll("#categoryFilters .btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#categoryFilters .btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeCategory = btn.getAttribute("data-cat");
+        renderGrid();
+      });
+    });
+
+    populateCompareSelects();
+    renderDetail();
+    updateComparison();
+    renderGrid();
+  </script>
+</body>
+</html>

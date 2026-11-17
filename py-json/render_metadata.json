@@ -1,0 +1,280 @@
+{
+  "blender_version": "5.3.0",
+  "engine": "CYCLES",
+  "device": "CPU",
+  "samples": 128,
+  "denoising": true,
+  "view_transform": "AgX",
+  "look": "None",
+  "exposure": 0.0,
+  "gamma": 1.0,
+  "preset_schema_version": 1,
+  "candle_seed": 18,
+  "total_elapsed_sec": 800.32,
+  "records": [
+    {
+      "id": "01_high_key",
+      "render_png": "images/01_high_key.png",
+      "render_webp": "images/01_high_key.webp",
+      "icon_png": "icons/01_high_key.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 43.53
+    },
+    {
+      "id": "02_low_key",
+      "render_png": "images/02_low_key.png",
+      "render_webp": "images/02_low_key.webp",
+      "icon_png": "icons/02_low_key.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 23.66
+    },
+    {
+      "id": "03_silhouette",
+      "render_png": "images/03_silhouette.png",
+      "render_webp": "images/03_silhouette.webp",
+      "icon_png": "icons/03_silhouette.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 25.49
+    },
+    {
+      "id": "04_complementary",
+      "render_png": "images/04_complementary.png",
+      "render_webp": "images/04_complementary.webp",
+      "icon_png": "icons/04_complementary.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 31.51
+    },
+    {
+      "id": "05_hard",
+      "render_png": "images/05_hard.png",
+      "render_webp": "images/05_hard.webp",
+      "icon_png": "icons/05_hard.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 23.7
+    },
+    {
+      "id": "06_soft",
+      "render_png": "images/06_soft.png",
+      "render_webp": "images/06_soft.webp",
+      "icon_png": "icons/06_soft.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 24.87
+    },
+    {
+      "id": "07_three_point",
+      "render_png": "images/07_three_point.png",
+      "render_webp": "images/07_three_point.webp",
+      "icon_png": "icons/07_three_point.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 30.63
+    },
+    {
+      "id": "08_rembrandt",
+      "render_png": "images/08_rembrandt.png",
+      "render_webp": "images/08_rembrandt.webp",
+      "icon_png": "icons/08_rembrandt.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 25.88
+    },
+    {
+      "id": "09_butterfly",
+      "render_png": "images/09_butterfly.png",
+      "render_webp": "images/09_butterfly.webp",
+      "icon_png": "icons/09_butterfly.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 23.46
+    },
+    {
+      "id": "10_split",
+      "render_png": "images/10_split.png",
+      "render_webp": "images/10_split.webp",
+      "icon_png": "icons/10_split.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 21.97
+    },
+    {
+      "id": "11_top_light",
+      "render_png": "images/11_top_light.png",
+      "render_webp": "images/11_top_light.webp",
+      "icon_png": "icons/11_top_light.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 23.13
+    },
+    {
+      "id": "12_rim_light",
+      "render_png": "images/12_rim_light.png",
+      "render_webp": "images/12_rim_light.webp",
+      "icon_png": "icons/12_rim_light.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 16.24
+    },
+    {
+      "id": "13_under_lighting",
+      "render_png": "images/13_under_lighting.png",
+      "render_webp": "images/13_under_lighting.webp",
+      "icon_png": "icons/13_under_lighting.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 25.22
+    },
+    {
+      "id": "14_venetian_blinds",
+      "render_png": "images/14_venetian_blinds.png",
+      "render_webp": "images/14_venetian_blinds.webp",
+      "icon_png": "icons/14_venetian_blinds.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 37.0
+    },
+    {
+      "id": "15_volumetric",
+      "render_png": "images/15_volumetric.png",
+      "render_webp": "images/15_volumetric.webp",
+      "icon_png": "icons/15_volumetric.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 51.7
+    },
+    {
+      "id": "16_motivated",
+      "render_png": "images/16_motivated.png",
+      "render_webp": "images/16_motivated.webp",
+      "icon_png": "icons/16_motivated.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 39.02
+    },
+    {
+      "id": "17_practical",
+      "render_png": "images/17_practical.png",
+      "render_webp": "images/17_practical.webp",
+      "icon_png": "icons/17_practical.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 29.83
+    },
+    {
+      "id": "18_candlelight",
+      "render_png": "images/18_candlelight.png",
+      "render_webp": "images/18_candlelight.webp",
+      "icon_png": "icons/18_candlelight.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 25.05
+    },
+    {
+      "id": "19_spotlight",
+      "render_png": "images/19_spotlight.png",
+      "render_webp": "images/19_spotlight.webp",
+      "icon_png": "icons/19_spotlight.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 19.16
+    },
+    {
+      "id": "20_golden_hour",
+      "render_png": "images/20_golden_hour.png",
+      "render_webp": "images/20_golden_hour.webp",
+      "icon_png": "icons/20_golden_hour.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 15.07
+    },
+    {
+      "id": "21_blue_hour",
+      "render_png": "images/21_blue_hour.png",
+      "render_webp": "images/21_blue_hour.webp",
+      "icon_png": "icons/21_blue_hour.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 27.65
+    },
+    {
+      "id": "22_teal_and_orange",
+      "render_png": "images/22_teal_and_orange.png",
+      "render_webp": "images/22_teal_and_orange.webp",
+      "icon_png": "icons/22_teal_and_orange.png",
+      "samples": 128,
+      "resolution": [
+        1200,
+        1200
+      ],
+      "elapsed_sec": 42.4
+    }
+  ]
+}

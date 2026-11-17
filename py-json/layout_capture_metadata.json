@@ -1,0 +1,236 @@
+{
+  "blender_version": "5.3.0",
+  "capture_method": "Blender GUI Window 3D Viewport OpenGL Capture (non-headless)",
+  "camera_view_pos": [
+    5.8,
+    -6.8,
+    4.8
+  ],
+  "camera_target": [
+    0.0,
+    -0.6,
+    1.4
+  ],
+  "records": [
+    {
+      "id": "01_high_key",
+      "layout_png": "layouts/01_high_key.png",
+      "layout_webp": "layouts/01_high_key.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "02_low_key",
+      "layout_png": "layouts/02_low_key.png",
+      "layout_webp": "layouts/02_low_key.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "03_silhouette",
+      "layout_png": "layouts/03_silhouette.png",
+      "layout_webp": "layouts/03_silhouette.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "04_complementary",
+      "layout_png": "layouts/04_complementary.png",
+      "layout_webp": "layouts/04_complementary.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "05_hard",
+      "layout_png": "layouts/05_hard.png",
+      "layout_webp": "layouts/05_hard.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "06_soft",
+      "layout_png": "layouts/06_soft.png",
+      "layout_webp": "layouts/06_soft.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "07_three_point",
+      "layout_png": "layouts/07_three_point.png",
+      "layout_webp": "layouts/07_three_point.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "08_rembrandt",
+      "layout_png": "layouts/08_rembrandt.png",
+      "layout_webp": "layouts/08_rembrandt.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "09_butterfly",
+      "layout_png": "layouts/09_butterfly.png",
+      "layout_webp": "layouts/09_butterfly.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "10_split",
+      "layout_png": "layouts/10_split.png",
+      "layout_webp": "layouts/10_split.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "11_top_light",
+      "layout_png": "layouts/11_top_light.png",
+      "layout_webp": "layouts/11_top_light.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "12_rim_light",
+      "layout_png": "layouts/12_rim_light.png",
+      "layout_webp": "layouts/12_rim_light.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "13_under_lighting",
+      "layout_png": "layouts/13_under_lighting.png",
+      "layout_webp": "layouts/13_under_lighting.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "14_venetian_blinds",
+      "layout_png": "layouts/14_venetian_blinds.png",
+      "layout_webp": "layouts/14_venetian_blinds.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "15_volumetric",
+      "layout_png": "layouts/15_volumetric.png",
+      "layout_webp": "layouts/15_volumetric.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "16_motivated",
+      "layout_png": "layouts/16_motivated.png",
+      "layout_webp": "layouts/16_motivated.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "17_practical",
+      "layout_png": "layouts/17_practical.png",
+      "layout_webp": "layouts/17_practical.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "18_candlelight",
+      "layout_png": "layouts/18_candlelight.png",
+      "layout_webp": "layouts/18_candlelight.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "19_spotlight",
+      "layout_png": "layouts/19_spotlight.png",
+      "layout_webp": "layouts/19_spotlight.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "20_golden_hour",
+      "layout_png": "layouts/20_golden_hour.png",
+      "layout_webp": "layouts/20_golden_hour.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "21_blue_hour",
+      "layout_png": "layouts/21_blue_hour.png",
+      "layout_webp": "layouts/21_blue_hour.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    },
+    {
+      "id": "22_teal_and_orange",
+      "layout_png": "layouts/22_teal_and_orange.png",
+      "layout_webp": "layouts/22_teal_and_orange.webp",
+      "capture_type": "GUI_VIEWPORT_OPENGL",
+      "resolution": [
+        1200,
+        900
+      ]
+    }
+  ]
+}
