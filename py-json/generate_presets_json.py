@@ -808,9 +808,10 @@ PRESETS = [
     }
 ]
 
+PY_JSON_DIR = os.path.dirname(os.path.abspath(__file__))
 out_paths = [
-    "/Users/jinhojung/Desktop/블렌더 조명 애드온/py-json/presets.json",
-    "/Users/jinhojung/Desktop/블렌더 조명 애드온/py-json/simple_light/presets.json",
+    os.path.join(PY_JSON_DIR, "presets.json"),
+    os.path.join(PY_JSON_DIR, "simple_light", "presets.json"),
 ]
 
 for p in out_paths:

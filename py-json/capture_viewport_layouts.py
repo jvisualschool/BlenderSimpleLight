@@ -5,7 +5,7 @@ import sys
 import bpy
 from mathutils import Vector
 
-ROOT_DIR = "/Users/jinhojung/Desktop/블렌더 조명 애드온"
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY_JSON_DIR = os.path.join(ROOT_DIR, "py-json")
 LAYOUTS_DIR = os.path.join(ROOT_DIR, "Preview", "layouts")
 os.makedirs(LAYOUTS_DIR, exist_ok=True)

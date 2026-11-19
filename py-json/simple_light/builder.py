@@ -23,10 +23,16 @@ def hex_to_linear_rgb(value):
     return tuple(result)
 
 
+_PRESETS_DATA_CACHE = None
+
+
 def load_presets_data():
-    json_path = os.path.join(os.path.dirname(__file__), "presets.json")
-    with open(json_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    global _PRESETS_DATA_CACHE
+    if _PRESETS_DATA_CACHE is None:
+        json_path = os.path.join(os.path.dirname(__file__), "presets.json")
+        with open(json_path, "r", encoding="utf-8") as f:
+            _PRESETS_DATA_CACHE = json.load(f)
+    return _PRESETS_DATA_CACHE
 
 
 def get_preset_by_id(preset_id):

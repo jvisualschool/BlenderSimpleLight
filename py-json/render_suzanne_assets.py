@@ -2,10 +2,11 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import time
 import bpy
 
-ROOT_DIR = "/Users/jinhojung/Desktop/블렌더 조명 애드온"
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY_JSON_DIR = os.path.join(ROOT_DIR, "py-json")
 PREVIEW_DIR = os.path.join(ROOT_DIR, "Preview")
 IMAGES_DIR = os.path.join(PREVIEW_DIR, "images")
@@ -77,7 +78,7 @@ for p in data["presets"]:
 print("Rendering 18_candlelight 1..48 animation frames...")
 scene.simple_light.selected_preset = "18_candlelight"
 bpy.ops.simple_light.apply_preset(replace_existing=True)
-frames_dir = "/Users/jinhojung/.gemini/antigravity/brain/09f170e8-f0d5-425e-84c3-4f8fbdc56884/scratch/candle_frames"
+frames_dir = os.path.join(tempfile.gettempdir(), "simple_light_candle_frames")
 os.makedirs(frames_dir, exist_ok=True)
 scene.render.resolution_x = 600
 scene.render.resolution_y = 600

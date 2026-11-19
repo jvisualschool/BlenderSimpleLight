@@ -4,23 +4,36 @@ import bpy.utils.previews
 from . import builder
 
 PREVIEW_COLLECTIONS = {}
-PRESET_ITEMS_CACHE = []
+PRESET_ITEMS_CACHE = ()
+_ENUM_STRING_POOL = {}
 
 
-def get_preset_enum_items(self, context):
+def _keep_str(key, value):
+    if key not in _ENUM_STRING_POOL or _ENUM_STRING_POOL[key] != value:
+        _ENUM_STRING_POOL[key] = value
+    return _ENUM_STRING_POOL[key]
+
+
+def build_preset_enum_items():
     global PRESET_ITEMS_CACHE
     pcoll = PREVIEW_COLLECTIONS.get("main")
     data = builder.load_presets_data()
     items = []
     for idx, p in enumerate(data.get("presets", [])):
-        pid = p["id"]
-        label = f"{p['number']} {p['name_ko']}"
-        desc = f"{p['name_en']} - {p['observation']}"
+        pid = _keep_str(f"id_{idx}", str(p["id"]))
+        label = _keep_str(f"label_{idx}", f"{p['number']} {p['name_ko']}")
+        desc = _keep_str(f"desc_{idx}", f"{p['name_en']} - {p['observation']}")
         icon_id = 0
         if pcoll is not None and pid in pcoll:
             icon_id = pcoll[pid].icon_id
         items.append((pid, label, desc, icon_id, idx))
-    PRESET_ITEMS_CACHE = items
+    PRESET_ITEMS_CACHE = tuple(items)
+    return PRESET_ITEMS_CACHE
+
+
+def get_preset_enum_items(self, context):
+    if not PRESET_ITEMS_CACHE:
+        return build_preset_enum_items()
     return PRESET_ITEMS_CACHE
 
 
@@ -526,12 +539,15 @@ def load_previews():
         if os.path.exists(icon_path):
             pcoll.load(pid, icon_path, 'IMAGE')
     PREVIEW_COLLECTIONS["main"] = pcoll
+    build_preset_enum_items()
 
 
 def unload_previews():
+    global PRESET_ITEMS_CACHE
     for pcoll in PREVIEW_COLLECTIONS.values():
         bpy.utils.previews.remove(pcoll)
     PREVIEW_COLLECTIONS.clear()
+    PRESET_ITEMS_CACHE = ()
 
 
 def register():

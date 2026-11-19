@@ -1,7 +1,7 @@
 import json
 import os
 
-ROOT_DIR = "/Users/jinhojung/Desktop/블렌더 조명 애드온"
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRESETS_JSON = os.path.join(ROOT_DIR, "py-json", "presets.json")
 HTML_OUT = os.path.join(ROOT_DIR, "Preview", "index.html")
 

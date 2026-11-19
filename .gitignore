@@ -1,0 +1,19 @@
+# macOS / Python
+.DS_Store
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Blender temp & local test files
+*.blend1
+*.blend2
+Light_Test.blend
+
+# Root duplicate zip (use py-json/simple_light-1.0.0.zip)
+/simple_light-1.0.0.zip
+
+# Local reference images & personal notes
+Untitled1.png
+제미나이 Argon.png
+참고 *.png
+프롬프트.txt
