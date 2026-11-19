@@ -1,5 +1,9 @@
 # Simple Light
 
+> ### ⬇️ 애드온 다운로드 (Blender 5.3+)
+> **👉 [`simple_light-1.0.0.zip` 바로 다운로드](https://github.com/jvisualschool/BlenderSimpleLight/releases/download/v1.0.0/simple_light-1.0.0.zip)**  
+> *(전체 소스를 받을 필요 없이 위 `.zip` 파일 하나만 받아서 Blender에 바로 설치하면 됩니다.)*
+
 ![Simple Light Blender 5.3.0 UI](Preview/simple_light_ui.jpg)
 
 클릭 한 번으로 **22가지 시네마틱·스튜디오 조명**을 내 모델에 바로 적용할 수 있는 Blender 5.3+ 애드온입니다.  
@@ -23,10 +27,10 @@
 
 ## 설치 방법
 
-1. Blender **5.3.0 이상**을 실행합니다.
-2. 상단 메뉴에서 **Edit → Preferences → Get Extensions** (또는 **Add-ons**)를 엽니다.
+1. 위 **[`simple_light-1.0.0.zip` 바로 다운로드](https://github.com/jvisualschool/BlenderSimpleLight/releases/download/v1.0.0/simple_light-1.0.0.zip)** 링크를 눌러 `.zip` 파일을 받습니다.
+2. Blender **5.3.0 이상**을 실행하고 **Edit → Preferences → Get Extensions** (또는 **Add-ons**)를 엽니다.
 3. 우측 상단 메뉴(`⌄`) → **Install from Disk...** 를 클릭합니다.
-4. `py-json/simple_light-1.0.0.zip` 파일을 선택해 설치하고, **Simple Light**가 체크되어 있는지 확인합니다.
+4. 방금 받은 `simple_light-1.0.0.zip` 파일을 선택해 설치하고, **Simple Light**가 체크되어 있는지 확인합니다.
 
 ---
 
