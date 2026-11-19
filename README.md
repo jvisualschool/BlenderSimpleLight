@@ -1,5 +1,7 @@
 # Simple Light
 
+![Simple Light Blender 5.3.0 UI](Preview/simple_light_ui.jpg)
+
 클릭 한 번으로 **22가지 시네마틱·스튜디오 조명**을 내 모델에 바로 적용할 수 있는 Blender 5.3+ 애드온입니다.  
 수잔(Suzanne) 썸네일을 보고 원하는 분위기를 고르면, 피사체 크기에 맞춰 조명과 소품이 자동으로 배치됩니다.
 
